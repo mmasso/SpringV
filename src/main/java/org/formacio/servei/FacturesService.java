@@ -26,6 +26,9 @@ public class FacturesService {
 	@Autowired
 	FacturesRepositori facturaRepo;
 	
+	@Autowired
+	FidalitzacioService fidelService;
+	
 	public Factura afegirProducte (long idFactura, String producte, int totalProducte) {
 		
 		Optional<Factura> factura= facturaRepo.findById(idFactura);
@@ -34,9 +37,13 @@ public class FacturesService {
 			LiniaFactura linia = new LiniaFactura();
 			linia.setProducte(producte);
 			linia.setTotal(totalProducte);
-			
 			factura.get().getLinies().add(linia);
 			facturaRepo.save(factura.get());
+			
+			if(factura.get().getLinies().size() >= 4) {
+				String email = factura.get().getClient().getEmail();
+				fidelService.notificaRegal(email);
+			}
 		}
 		
 		return factura.get();
