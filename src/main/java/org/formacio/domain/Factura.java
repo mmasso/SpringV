@@ -3,6 +3,7 @@ package org.formacio.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,8 +15,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
-@Entity
-@Table(name="t_factures")
+@Entity 
+@Table(name="t_factures") 
 public class Factura {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +27,7 @@ public class Factura {
 	@JoinColumn(name="fac_client")
 	private Client client;
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="lin_factura")
 	private Set<LiniaFactura> linies = new HashSet<>();
 
